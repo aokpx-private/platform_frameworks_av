@@ -975,7 +975,8 @@ status_t ACodec::configureCodec(
             }
 
             err = setupAACCodec(
-                    encoder, numChannels, sampleRate, bitRate, aacProfile, isADTS != 0);
+                    encoder, numChannels, sampleRate, bitRate, aacProfile,
+                    isADTS != 0);
         }
     } else if (!strcasecmp(mime, MEDIA_MIMETYPE_AUDIO_AMR_NB)) {
         err = setupAMRCodec(encoder, false /* isWAMR */, bitRate);
@@ -1022,6 +1023,10 @@ status_t ACodec::configureCodec(
         } else {
             err = setupRawAudioFormat(kPortIndexInput, sampleRate, numChannels);
         }
+    }
+
+    if (err != OK) {
+        return err;
     }
 
     if (!msg->findInt32("encoder-delay", &mEncoderDelay)) {
